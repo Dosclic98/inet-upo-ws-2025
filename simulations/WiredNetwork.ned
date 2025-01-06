@@ -25,6 +25,10 @@ network WiredNetwork {
         int numCliG1 = default(3);
         int numCliG2 = default(3);
         
+        @statistic[globalPacketSent](title="global packets sent"; source=packetSent; record=count/2);
+        @statistic[globalPacketReceived](title="global packets received"; source=packetReceived; record=count/2);
+        @statistic[globalThroughput](title="global throughput"; unit=bps; source="throughput(packetReceived)/2"; record=vector);
+        @statistic[globalEndToEndDelay](title="global end-to-end delay"; source="dataAge(packetReceived)"; unit=s; record=histogram,vector; interpolationmode=none);
     submodules:
         configurator: Ipv4NetworkConfigurator;
         router: Router;
@@ -35,13 +39,13 @@ network WiredNetwork {
         
     connections:
         for k=0..sizeof(switch)-1 {
-        	switch[k].ethg++ <--> Eth100M <--> router.ethg++;
+        	switch[k].ethg++ <--> Eth100M {per = 0.1;} <--> router.ethg++;
         }
         for i=0..numCliG1-1 {
-        	cliG1[i].ethg++ <--> Eth100M <--> switch[0].ethg++;
+        	cliG1[i].ethg++ <--> Eth100M {per = 0;} <--> switch[0].ethg++;
         }
         for j=0..numCliG2-1 {
-        	cliG2[j].ethg++ <--> Eth100M <--> switch[1].ethg++;
+        	cliG2[j].ethg++ <--> Eth100M {per = 0;} <--> switch[1].ethg++;
         }
         
         server.ethg++ <--> Eth100M <--> router.ethg++;
