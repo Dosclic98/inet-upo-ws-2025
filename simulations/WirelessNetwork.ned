@@ -15,13 +15,13 @@
 
 package inet_upo_ws_2025.simulations;
 import inet.node.inet.Router;
-import inet.node.inet.StandardHost;
+import inet.node.inet.WirelessHost;
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
+import inet.node.wireless.AccessPoint;
 import inet.node.ethernet.*;
 
-
-network WiredNetwork {
-    parameters:
+network WirelessNetwork {
+	parameters:
         int numCliG1 = default(3);
         int numCliG2 = default(3);
         
@@ -31,24 +31,12 @@ network WiredNetwork {
         @statistic[globalEndToEndDelay](title="global end-to-end delay"; source="dataAge(packetReceived)"; unit=s; record=histogram,vector; interpolationmode=none);
     submodules:
         configurator: Ipv4NetworkConfigurator;
+        cliG1[numCliG1]: WirelessHost;
+        cliG2[numCliG2]: WirelessHost;
+        server: WirelessHost;
         router: Router;
-        switch[2]: EthernetSwitch;
-        cliG1[numCliG1]: StandardHost;
-        cliG2[numCliG2]: StandardHost;
-        server: StandardHost;
+        ap: AccessPoint;
         
     connections:
-        for k=0..sizeof(switch)-1 {
-        	switch[k].ethg++ <--> Eth100M <--> router.ethg++;
-        }
-        for i=0..numCliG1-1 {
-        	cliG1[i].ethg++ <--> Eth100M <--> switch[0].ethg++;
-        }
-        for j=0..numCliG2-1 {
-        	cliG2[j].ethg++ <--> Eth100M <--> switch[1].ethg++;
-        }
-        
-        server.ethg++ <--> Eth100M <--> router.ethg++;
-        
-        
+	
 }
