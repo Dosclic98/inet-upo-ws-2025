@@ -51,7 +51,7 @@ network WirelessNetwork
             @display("p=273,177");
         }
         noiseSource: NoiseSource {
-            @display("p=147,260");
+            @display("p=164,231");
         }
     connections:
         router.ethg++ <--> Eth100M <--> ap.ethg++;
