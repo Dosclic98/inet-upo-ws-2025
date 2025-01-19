@@ -168,9 +168,12 @@ backups
 /doc/src/manual/tools/*.tex
 
 /out
-/simulations/results/*
 /src/*.exe
 *.qtenvrc
 *.sca
+*.vec
+*.vci
+*.anf
+*.csv
 *.exe
 /src/inet-upo-ws-2025
