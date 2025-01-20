@@ -25,10 +25,6 @@ network WiredNetwork {
         int numCliG1 = default(3);
         int numCliG2 = default(3);
         
-        @statistic[globalPacketSent](title="global packets sent"; source=packetSent; record=count/2);
-        @statistic[globalPacketReceived](title="global packets received"; source=packetReceived; record=count/2);
-        @statistic[globalThroughput](title="global throughput"; unit=bps; source="throughput(packetReceived)/2"; record=vector);
-        @statistic[globalEndToEndDelay](title="global end-to-end delay"; source="dataAge(packetReceived)"; unit=s; record=histogram,vector; interpolationmode=none);
     submodules:
         configurator: Ipv4NetworkConfigurator;
         router: Router;
