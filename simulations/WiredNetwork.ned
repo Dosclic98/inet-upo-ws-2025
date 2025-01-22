@@ -19,32 +19,4 @@ import inet.node.inet.StandardHost;
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.node.ethernet.*;
 
-
-network WiredNetwork {
-    parameters:
-        int numCliG1 = default(3);
-        int numCliG2 = default(3);
-        
-    submodules:
-        configurator: Ipv4NetworkConfigurator;
-        router: Router;
-        switch[2]: EthernetSwitch;
-        cliG1[numCliG1]: StandardHost;
-        cliG2[numCliG2]: StandardHost;
-        server: StandardHost;
-        
-    connections:
-        for k=0..sizeof(switch)-1 {
-        	switch[k].ethg++ <--> Eth100M <--> router.ethg++;
-        }
-        for i=0..numCliG1-1 {
-        	cliG1[i].ethg++ <--> Eth100M <--> switch[0].ethg++;
-        }
-        for j=0..numCliG2-1 {
-        	cliG2[j].ethg++ <--> Eth100M <--> switch[1].ethg++;
-        }
-        
-        server.ethg++ <--> Eth100M <--> router.ethg++;
-        
-        
-}
+// TODO Complete the wired network
